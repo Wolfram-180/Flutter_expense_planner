@@ -140,13 +140,8 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final mQ = MediaQuery.of(context);
-
-    final isLandscape = mQ.orientation == Orientation.landscape;
-
-    final dynamic appBar = Platform.isIOS
+  Widget _buildAppBar() {
+    return Platform.isIOS
         ? CupertinoNavigationBar(
             middle: Text(AppTitle),
             trailing: Row(
@@ -169,6 +164,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.add))
             ],
           );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mQ = MediaQuery.of(context);
+    final isLandscape = mQ.orientation == Orientation.landscape;
+    final dynamic appBar = _buildAppBar();
 
     final screenHeight =
         mQ.size.height - appBar.preferredSize.height - mQ.padding.top;
