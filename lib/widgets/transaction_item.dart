@@ -40,7 +40,7 @@ class _TransactionItemState extends State<TransactionItem> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         vertical: 8,
         horizontal: 5,
       ),
@@ -59,20 +59,18 @@ class _TransactionItemState extends State<TransactionItem> {
         ),
         title: Text(
           widget.transaction.title,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         subtitle: Text(
           DateFormat.yMMMd().format(widget.transaction.date),
         ),
         trailing: widget.mQ.size.width > 460
-            ? FlatButton.icon(
-                textColor: Theme.of(context).errorColor,
+            ? IconButton(
                 onPressed: () => widget.deleteTx(widget.transaction.id),
-                icon: Icon(Icons.delete),
-                label: Text('Delete'))
+                icon: const Icon(Icons.delete))
             : IconButton(
-                icon: Icon(Icons.delete),
-                color: Theme.of(context).errorColor,
+                icon: const Icon(Icons.delete),
+                color: Theme.of(context).colorScheme.error,
                 onPressed: () => widget.deleteTx(widget.transaction.id),
               ),
       ),

@@ -9,47 +9,39 @@ import 'widgets/new_transaction.dart';
 import 'widgets/transaction_list.dart';
 
 void main() {
-  //WidgetsFlutterBinding.ensureInitialized();
-  //SystemChrome.setPreferredOrientations(
-  //  [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-String AppTitle = 'Personal Expenses';
+const String appTitle = 'Personal Expenses';
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: AppTitle,
+      title: appTitle,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        accentColor: Colors.amber,
-        errorColor: Colors.red,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-              headline6: TextStyle(
+              titleLarge: const TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
-              button: TextStyle(color: Colors.white),
+              labelLarge: const TextStyle(color: Colors.white),
             ),
-        appBarTheme: AppBarTheme(
-          textTheme: ThemeData.light().textTheme.copyWith(
-                  headline6: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              )),
-        ),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+            .copyWith(secondary: Colors.amber),
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -61,18 +53,18 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
   didChangeAppLifecycleState(AppLifecycleState state) {
-    print(state);
+    // print(state);
   }
 
   @override
   dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -80,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
-          Duration(days: 7),
+          const Duration(days: 7),
         ),
       );
     }).toList();
@@ -126,10 +118,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         children: [
           Text(
             'Show Chart',
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           Switch.adaptive(
-              activeColor: Theme.of(context).accentColor,
+              activeColor: Theme.of(context).highlightColor,
               value: _showChart,
               onChanged: (val) {
                 setState(() {
@@ -139,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         ],
       ),
       _showChart
-          ? Container(
+          ? SizedBox(
               height: screenHeight * 0.7,
               child: Chart(_recentTransactions),
             )
@@ -149,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   List<Widget> _buildPortraitContent(double screenHeight, txListWidget) {
     return [
-      Container(
+      SizedBox(
         height: screenHeight * 0.26,
         child: Chart(_recentTransactions),
       ),
@@ -160,25 +152,25 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Widget _buildAppBar() {
     return Platform.isIOS
         ? CupertinoNavigationBar(
-            middle: Text(AppTitle),
+            middle: const Text(appTitle),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
-                  child: Icon(CupertinoIcons.add),
+                  child: const Icon(CupertinoIcons.add),
                   onTap: () => _startAddNewTransaction(context),
                 ),
               ],
             ),
           )
         : AppBar(
-            title: Text(
-              AppTitle,
+            title: const Text(
+              appTitle,
             ),
             actions: <Widget>[
               IconButton(
                   onPressed: () => _startAddNewTransaction(context),
-                  icon: Icon(Icons.add))
+                  icon: const Icon(Icons.add))
             ],
           );
   }
@@ -192,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     final screenHeight =
         mQ.size.height - appBar.preferredSize.height - mQ.padding.top;
 
-    final txListWidget = Container(
+    final txListWidget = SizedBox(
       height: screenHeight * 0.74,
       child: TransactionList(_userTransactions, _deleteTransaction),
     );
@@ -224,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             floatingActionButton: Platform.isIOS
                 ? Container()
                 : FloatingActionButton(
-                    child: Icon(Icons.add),
+                    child: const Icon(Icons.add),
                     onPressed: () => _startAddNewTransaction(context),
                   ),
           );

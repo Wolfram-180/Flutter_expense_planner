@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -7,13 +6,13 @@ import 'adaptive_flat_button.dart';
 class NewTransaction extends StatefulWidget {
   late final Function addTx;
 
-  NewTransaction(this.addTx) {
-    print('Constructor NewTransaction Widget');
+  NewTransaction(this.addTx, {Key? key}) : super(key: key) {
+    // print('Constructor NewTransaction Widget');
   }
 
   @override
   State<NewTransaction> createState() {
-    print('createState NewTransaction Widget');
+    // print('createState NewTransaction Widget');
     return _NewTransactionState();
   }
 }
@@ -21,27 +20,27 @@ class NewTransaction extends StatefulWidget {
 class _NewTransactionState extends State<NewTransaction> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
-  DateTime _selectedDate = DateTime.now();
+  DateTime? _selectedDate = DateTime.now();
 
   _NewTransactionState() {
-    print('Constructor NewTransaction State');
+    // print('Constructor NewTransaction State');
   }
 
   @override
   void initState() {
-    print('initState()');
+    // print('initState()');
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant NewTransaction oldWidget) {
-    print('didUpdateWidget()');
+    // print('didUpdateWidget()');
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
-    print('dispose()');
+    // print('dispose()');
     super.dispose();
   }
 
@@ -53,7 +52,7 @@ class _NewTransactionState extends State<NewTransaction> {
     final enteredTitle = _titleController.text;
     final enteredAmount = double.parse(_amountController.text);
 
-    if (enteredAmount <= 0 || _selectedDate == null) {
+    if (enteredAmount <= 0) {
       return;
     }
 
@@ -100,24 +99,25 @@ class _NewTransactionState extends State<NewTransaction> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               TextField(
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: 'Title'),
                 controller: _titleController,
                 onSubmitted: (_) => _submitData(),
               ),
               TextField(
-                decoration: InputDecoration(labelText: 'Amount'),
+                decoration: const InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 onSubmitted: (_) => _submitData(),
               ),
-              Container(
+              SizedBox(
                 height: 70,
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(_selectedDate == null
                           ? 'No Date Chosen!'
-                          : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}'),
+                          : 'Picked Date: ${DateFormat.yMd().format(_selectedDate!)}'),
                     ),
                     AdaptiveFlatButton(
                       'Choose Date',
@@ -126,10 +126,8 @@ class _NewTransactionState extends State<NewTransaction> {
                   ],
                 ),
               ),
-              RaisedButton(
-                child: Text('Add Transaction'),
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).textTheme.button!.color,
+              TextButton(
+                child: const Text('Add Transaction'),
                 onPressed: _submitData,
               ),
             ],
